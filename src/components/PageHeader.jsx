@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
-export default function PageHeader({ eyebrow, title, description, action }) {
+export default function PageHeader({ eyebrow, title, description, action,
+  onAction }) {
   return (
     <div
       className="flex flex-col gap-4 sm:flex-row sm:items-end
@@ -25,7 +26,7 @@ export default function PageHeader({ eyebrow, title, description, action }) {
       {action && (
         <button
           type="button"
-          onClick={() => alert("This button will connect to a form later.")}
+          onClick={onAction}
           className="inline-flex min-h-11 items-center justify-center gap-2
             rounded-xl bg-indigo-600 px-4 text-sm font-semibold text-white
             shadow-sm transition hover:bg-indigo-700 focus:outline-none

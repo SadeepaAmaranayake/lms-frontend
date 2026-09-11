@@ -1,7 +1,7 @@
 import { ArrowLeft, BookOpen, CalendarDays, Users } from "lucide-react";
 import { Link, useParams } from "react-router";
 import StatCard from "../components/StatCard";
-import { grades, students, timetable, tutes } from "../data/MockData";
+import { grades, students, timetable, tutes } from "../data/mockData";
 export default function GradeDetails() {
   const { gradeNumber } = useParams();
   const number = Number(gradeNumber);

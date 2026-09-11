@@ -1,13 +1,28 @@
 import ResourcePage from "./ResourcePage";
 import { students } from "../data/mockData";
+import { gradeOptions, paymentOptions,
+  validateSriLankanPhone } from "../data/formOptions";
+
 const columns = [
   { key: "name", label: "Student" },
   { key: "phone", label: "Phone" },
   { key: "grade", label: "Grade", grade: true },
   { key: "status", label: "September payment", badge: true },
 ];
+const fields = [
+  { key: "name", label: "Full name", required: true, fullWidth: true },
+  { key: "phone", label: "Student phone", required: true,
+    placeholder: "0771234567", validate: validateSriLankanPhone },
+  { key: "parentPhone", label: "Parent phone", placeholder: "+94771234567",
+    validate: validateSriLankanPhone },
+  { key: "grade", label: "Grade", type: "select", required: true,
+    options: gradeOptions },
+  { key: "school", label: "School" },
+  { key: "status", label: "Payment status", type: "select", required: true,
+    defaultValue: "Pending", options: paymentOptions },
+];
 export default function Students() {
   return <ResourcePage eyebrow="People" title="Students"
     description="Review student contact, grade, and payment information."
-    action="Add student" columns={columns} rows={students} />;
+    action="Add student" columns={columns} rows={students} fields={fields} />;
 }
