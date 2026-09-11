@@ -1,4 +1,4 @@
-import StatusBadge from "./statusBadge";
+import StatusBadge from "./StatusBadge";
 export default function DataTable({ columns, rows }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200

@@ -1,7 +1,7 @@
 import { BookOpen, CreditCard, GraduationCap, Users } from "lucide-react";
-import StatCard from "../components/statCard";
-import StatusBadge from "../components/statusBadge";
-import { announcements, grades, payments, students } from "../data/mockData";
+import StatCard from "../components/StatCard";
+import StatusBadge from "../components/StatusBadge";
+import { announcements, grades, payments, students } from "../data/MockData";
 export default function Dashboard() {
   const totalStudents = grades.reduce((sum, grade) => sum + grade.students, 0);
   const paid = payments.filter((payment) => payment.status === "Paid").length;

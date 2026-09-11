@@ -1,4 +1,4 @@
-import ResourcePage from "./resourcePage";
+import ResourcePage from "./ResourcePage";
 import { zoomLinks } from "../data/mockData";
 const columns = [
   { key: "title", label: "Class" },

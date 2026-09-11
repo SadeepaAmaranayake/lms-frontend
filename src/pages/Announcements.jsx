@@ -1,5 +1,5 @@
-import ResourcePage from "./resourcePage";
-import { announcements } from "../data/mockData";
+import ResourcePage from "./ResourcePage";
+import { announcements } from "../data/MockData";
 const columns = [
   { key: "title", label: "Announcement" },
   { key: "audience", label: "Audience" },

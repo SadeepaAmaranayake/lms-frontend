@@ -1,4 +1,4 @@
-import ResourcePage from "./resourcePage";
+import ResourcePage from "./ResourcePage";
 import { papers } from "../data/mockData";
 const columns = [
   { key: "title", label: "Paper" },

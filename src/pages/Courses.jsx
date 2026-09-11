@@ -1,5 +1,5 @@
-import ResourcePage from "./resourcePage";
-import { courses } from "../data/mockData";
+import ResourcePage from "./ResourcePage";
+import { courses } from "../data/MockData";
 const columns = [
   { key: "title", label: "Course" },
   { key: "grade", label: "Grade", grade: true },
