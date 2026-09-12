@@ -1,4 +1,10 @@
 import { Navigate, Route, Routes } from "react-router";
+import RequiredStudent from "./student/components/RequiredStudent";
+import StudentLayout from "./student/components/StudentLayout";
+import StudentDashboard from "./student/pages/StudentDashboard";
+import StudentLogin from "./student/pages/StudentLogin";
+import StudentOtp from "./student/pages/StudentOtp";
+import StudentPlaceholder from "./student/pages/StudentPlaceholder";
 import AdminLayout from "./layouts/AdminLayout";
 import Announcements from "./pages/Announcements";
 import Courses from "./pages/Courses";
@@ -37,6 +43,52 @@ export default function App() {
       </Route>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/student/login" element={<StudentLogin />} />
+<Route path="/student/otp" element={<StudentOtp />} />
+
+<Route element={<RequiredStudent />}>
+  <Route path="/student" element={<StudentLayout />}>
+    <Route
+      index
+      element={<Navigate to="/student/dashboard" replace />}
+    />
+
+    <Route
+      path="dashboard"
+      element={<StudentDashboard />}
+    />
+
+    <Route
+      path="classes"
+      element={<StudentPlaceholder title="Classes" />}
+    />
+
+    <Route
+      path="tutes"
+      element={<StudentPlaceholder title="Tutes" />}
+    />
+
+    <Route
+      path="papers"
+      element={<StudentPlaceholder title="Papers" />}
+    />
+
+    <Route
+      path="courses"
+      element={<StudentPlaceholder title="Courses" />}
+    />
+
+    <Route
+      path="payments"
+      element={<StudentPlaceholder title="Payments" />}
+    />
+
+    <Route
+      path="profile"
+      element={<StudentPlaceholder title="Profile" />}
+    />
+  </Route>
+</Route>
     </Routes>
   );
 }
