@@ -1,8 +1,24 @@
 import { BookOpen, CalendarDays, CreditCard } from "lucide-react";
-import { studentMockData } from "../data/studentMockData";
+import { useState } from "react";
+import DevStateControls from "../../components/DevStateControls";
+import PageState from "../../components/PageState";
+import ClassCard from "../components/ClassCard";
+import PaymentStatus from "../components/PaymentStatus";
+import {
+  getStudentById,
+  studentClasses,
+} from "../data/studentMockData";
 
 export default function StudentDashboard() {
-  const student = studentMockData;
+  const [pageState, setPageState] = useState("success");
+  const student = getStudentById(sessionStorage.getItem("student-id"));
+  const nextClass = studentClasses.find(
+    (classItem) => classItem.grade === student.grade,
+  );
+
+  function handleJoin() {
+    window.alert("Development only: no real Zoom link is connected yet.");
+  }
 
   return (
     <div>
@@ -20,25 +36,30 @@ export default function StudentDashboard() {
         </p>
       </div>
 
-      {student.paymentStatus !== "paid" && (
-        <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
-          Your payment is currently unpaid. Some paid content may be
-          unavailable.
-        </div>
-      )}
+      <div className="mt-6">
+        <DevStateControls value={pageState} onChange={setPageState} />
+      </div>
 
-      <section className="mt-8 grid gap-5 md:grid-cols-3">
+      <PageState state={pageState} onRetry={() => setPageState("success")}>
+        {student.paymentStatus !== "paid" && (
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+            Your payment is currently unpaid. Some paid content may be
+            unavailable.
+          </div>
+        )}
+
+        <section className="mt-8 grid gap-5 md:grid-cols-3">
         <article className="rounded-2xl bg-white p-5 shadow-sm">
           <CalendarDays className="text-indigo-600" />
 
           <p className="mt-4 text-sm text-slate-500">Next class</p>
 
           <h2 className="mt-1 text-lg font-bold text-slate-900">
-            {student.nextClass.subject}
+            {nextClass?.subject ?? "No upcoming class"}
           </h2>
 
           <p className="mt-2 text-sm text-slate-600">
-            {student.nextClass.date} at {student.nextClass.time}
+            {nextClass ? `${nextClass.date} at ${nextClass.time}` : "Check again later"}
           </p>
         </article>
 
@@ -49,9 +70,9 @@ export default function StudentDashboard() {
             Payment status
           </p>
 
-          <h2 className="mt-1 text-lg font-bold capitalize text-slate-900">
-            {student.paymentStatus}
-          </h2>
+          <div className="mt-2">
+            <PaymentStatus status={student.paymentStatus} />
+          </div>
         </article>
 
         <article className="rounded-2xl bg-white p-5 shadow-sm">
@@ -65,36 +86,22 @@ export default function StudentDashboard() {
             {student.purchasedCourseIds.length}
           </h2>
         </article>
-      </section>
+        </section>
 
-      <section className="mt-8 rounded-2xl bg-white p-6 shadow-sm">
+        <section className="mt-8">
         <h2 className="text-xl font-bold text-slate-900">
           Upcoming class
         </h2>
 
-        <div className="mt-4 rounded-xl border border-slate-200 p-4">
-          <p className="font-semibold text-slate-900">
-            {student.nextClass.subject}
-          </p>
-
-          <p className="mt-1 text-sm text-slate-500">
-            {student.nextClass.date} at {student.nextClass.time}
-          </p>
-
-          {student.nextClass.zoomAvailable ? (
-            <button
-              type="button"
-              className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white"
-            >
-              Join Zoom class
-            </button>
-          ) : (
-            <p className="mt-4 text-sm text-slate-500">
-              Zoom link is not available yet.
-            </p>
-          )}
-        </div>
-      </section>
+          <div className="mt-4">
+            {nextClass ? (
+              <ClassCard classItem={nextClass} onJoin={handleJoin} />
+            ) : (
+              <PageState state="empty" />
+            )}
+          </div>
+        </section>
+      </PageState>
     </div>
   );
 }

@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
+import { getStudentById } from "../data/studentMockData";
 
 const DEVELOPMENT_OTP = "123456";
 
 export default function StudentOtp() {
   const navigate = useNavigate();
   const phone = sessionStorage.getItem("student-phone");
+  const pendingStudentId = sessionStorage.getItem("pending-student-id");
+  const student = getStudentById(pendingStudentId);
 
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
 
-  if (!phone) {
+  if (!phone || !student) {
     return <Navigate to="/student/login" replace />;
   }
 
@@ -23,6 +26,8 @@ export default function StudentOtp() {
     }
 
     sessionStorage.setItem("student-authenticated", "true");
+    sessionStorage.setItem("student-id", student.id);
+    sessionStorage.removeItem("pending-student-id");
     navigate("/student/dashboard", { replace: true });
   }
 

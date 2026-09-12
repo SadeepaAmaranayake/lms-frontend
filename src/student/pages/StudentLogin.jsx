@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import {
+  findStudentByPhone,
+  normalizePhone,
+} from "../data/studentMockData";
 
 export default function StudentLogin() {
   const navigate = useNavigate();
@@ -10,14 +14,22 @@ export default function StudentLogin() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    const cleanedPhone = phone.replace(/\s/g, "");
+    const cleanedPhone = normalizePhone(phone);
 
-    if (!/^\+?[0-9]{9,15}$/.test(cleanedPhone)) {
+    if (!/^[0-9]{9,15}$/.test(cleanedPhone)) {
       setError("Enter a valid phone number.");
       return;
     }
 
+    const student = findStudentByPhone(cleanedPhone);
+
+    if (!student) {
+      setError("No development student account matches this phone number.");
+      return;
+    }
+
     sessionStorage.setItem("student-phone", cleanedPhone);
+    sessionStorage.setItem("pending-student-id", student.id);
     navigate("/student/otp");
   }
 
@@ -33,7 +45,7 @@ export default function StudentLogin() {
         </p>
 
         <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-          Development only: no real SMS will be sent.
+          Development only: use phone 0771234567. No real SMS will be sent.
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
