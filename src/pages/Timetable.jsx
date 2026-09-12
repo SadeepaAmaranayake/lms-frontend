@@ -1,12 +1,23 @@
 import ResourcePage from "./ResourcePage";
 import { timetable } from "../data/mockData";
-import { dayOptions, gradeOptions } from "../data/formOptions";
+import { 
+   dayOptions,
+   gradeOptions,
+   validateGrade,
+   validateTimeRange,
+   } from "../data/formOptions";
 
 const columns = [
   { key: "grade", label: "Grade", grade: true },
   { key: "day", label: "Day" },
-  { key: "time", label: "Time" },
-  { key: "topic", label: "Topic" },
+  {
+    key: "time",
+    label: "Time",
+    required: true,
+    placeholder: "4:00 PM - 5:30 PM",
+    validate: validateTimeRange,
+  }, 
+ { key: "topic", label: "Topic" },
 ];
 const fields = [
   { key: "grade", label: "Grade", type: "select", required: true,

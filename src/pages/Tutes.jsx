@@ -1,6 +1,11 @@
 import ResourcePage from "./ResourcePage";
 import { tutes } from "../data/mockData";
-import { gradeOptions, publicationOptions } from "../data/formOptions";
+import {
+  gradeOptions,
+  publicationOptions,
+  validateGrade,
+  validateMaterialFile,
+} from "../data/formOptions";
 
 const materialFilters = [
   {
@@ -13,6 +18,14 @@ const materialFilters = [
     label: "Publication state",
     options: publicationOptions,
   },
+  {
+  key: "file",
+  label: "Material file",
+  type: "file",
+  accept: ".pdf,.doc,.docx",
+  fullWidth: true,
+  validate: validateMaterialFile,
+},
 ];
 
 const columns = [

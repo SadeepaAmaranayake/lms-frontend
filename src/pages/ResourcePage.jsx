@@ -270,6 +270,8 @@ export default function ResourcePage({
             key={`${editor.mode}-${editor.row?.id ?? "new"}`}
             fields={fields}
             initialValues={initialValues}
+            records={records}
+            editingId={editor.row?.id ?? null}
             onSubmit={saveRecord}
             onCancel={() => setEditor(null)}
             submitLabel={

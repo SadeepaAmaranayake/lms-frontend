@@ -4,8 +4,15 @@ import FormField from "./FormField";
 import LoadingSpinner from "./LoadingSpinner";
 import SelectField from "./SelectField";
 
-export default function ResourceForm({ fields, initialValues, onSubmit,
-  onCancel, submitLabel }) {
+export default function ResourceForm({ 
+  fields, 
+  initialValues, 
+  onSubmit,
+  onCancel,
+  submitLabel,
+  records = [],
+  editingId = null
+ }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
@@ -25,7 +32,7 @@ export default function ResourceForm({ fields, initialValues, onSubmit,
         return;
       }
       if (field.validate && value) {
-        const message = field.validate(value, values);
+        const message = field.validate(value, values, { records, editingId });
         if (message) nextErrors[field.key] = message;
       }
     });
@@ -53,16 +60,26 @@ export default function ResourceForm({ fields, initialValues, onSubmit,
       <ErrorMessage>{submitError}</ErrorMessage>
       <div className="grid gap-5 sm:grid-cols-2">
         {fields.map((field) => {
+          const isFile = field.type === "file";
           const sharedProps = {
             key: field.key,
             label: field.label,
             required: field.required,
-            value: values[field.key] ?? "",
             error: errors[field.key],
             className: field.fullWidth ? "sm:col-span-2" : "",
-            onChange: (event) => updateValue(field.key, event.target.value),
-          };
+            onChange: (event) => {
+              const value = isFile
+                ? event.target.files?.[0] ?? null
+                : event.target.value;
 
+              updateValue(field.key, value);
+            },
+            ...(isFile
+              ? {}
+              : {
+                  value: values[field.key] ?? "",
+                }),
+          };
           if (field.type === "select") {
             return <SelectField {...sharedProps} options={field.options} />;
           }
@@ -74,6 +91,7 @@ export default function ResourceForm({ fields, initialValues, onSubmit,
               multiline={field.multiline}
               min={field.min}
               step={field.step}
+              accept={field.accept}
             />
           );
         })}

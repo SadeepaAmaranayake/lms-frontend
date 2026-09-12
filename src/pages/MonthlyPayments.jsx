@@ -1,6 +1,11 @@
 import ResourcePage from "./ResourcePage";
 import { payments } from "../data/mockData";
-import { gradeOptions, paymentOptions } from "../data/formOptions";
+import {
+   gradeOptions,
+   paymentOptions,
+   validateGrade,
+   validatePositiveAmount,
+   } from "../data/formOptions";
 
 const paymentFilters = [
   {
@@ -24,7 +29,16 @@ const columns = [
   { key: "student", label: "Student" },
   { key: "grade", label: "Grade", grade: true },
   { key: "month", label: "Month" },
-  { key: "amount", label: "Amount" },
+  {
+    key: "amount",
+    label: "Amount",
+    type: "number",
+    required: true,
+    min: "1",
+    step: "0.01",
+    placeholder: "2500",
+    validate: validatePositiveAmount,
+  },
   { key: "status", label: "Status", badge: true },
 ];
 const fields = [

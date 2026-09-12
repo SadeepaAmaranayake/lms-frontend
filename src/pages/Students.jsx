@@ -1,7 +1,12 @@
 import ResourcePage from "./ResourcePage";
 import { students } from "../data/mockData";
-import { gradeOptions, paymentOptions,
-  validateSriLankanPhone } from "../data/formOptions";
+import { 
+   gradeOptions,
+   paymentOptions,
+   validateDuplicateStudentPhone,
+   validateGrade,
+   validateSriLankanPhone,
+   } from "../data/formOptions";
 
 const studentFilters = [
   {
@@ -13,8 +18,23 @@ const studentFilters = [
 
 const columns = [
   { key: "name", label: "Student" },
-  { key: "phone", label: "Phone" },
-  { key: "grade", label: "Grade", grade: true },
+  {
+    key: "phone",
+    label: "Student phone",
+    required: true,
+    placeholder: "0771234567",
+    validate: (value, values, context) =>
+      validateSriLankanPhone(value) ||
+      validateDuplicateStudentPhone(value, values, context),
+  },  
+  {
+    key: "grade",
+    label: "Grade",
+    type: "select",
+    required: true,
+    options: gradeOptions,
+    validate: validateGrade,
+  },
   { key: "status", label: "September payment", badge: true },
 ];
 const fields = [
