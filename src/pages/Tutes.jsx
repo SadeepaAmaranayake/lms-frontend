@@ -2,6 +2,19 @@ import ResourcePage from "./ResourcePage";
 import { tutes } from "../data/mockData";
 import { gradeOptions, publicationOptions } from "../data/formOptions";
 
+const materialFilters = [
+  {
+    key: "grade",
+    label: "Grade",
+    options: gradeOptions,
+  },
+  {
+    key: "status",
+    label: "Publication state",
+    options: publicationOptions,
+  },
+];
+
 const columns = [
   { key: "title", label: "Tute" },
   { key: "grade", label: "Grade", grade: true },
@@ -20,7 +33,17 @@ const fields = [
     fullWidth: true },
 ];
 export default function Tutes() {
-  return <ResourcePage eyebrow="Learning material" title="Tutes"
-    description="Track the worksheets and lesson packs prepared for students."
-    action="Add tute" columns={columns} rows={tutes} fields={fields} />;
+  return <ResourcePage 
+  eyebrow="Learning material" 
+  title="Tutes"
+  description="Track the worksheets and lesson packs prepared for students."
+  action="Add tute" 
+  columns={columns} 
+  rows={tutes} 
+  fields={fields} 
+  searchKeys={["title"]}
+  searchPlaceholder="Search by title..."
+  filters={materialFilters}
+  pageSize={5}
+  />;
 }

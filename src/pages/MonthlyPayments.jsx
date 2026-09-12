@@ -2,6 +2,24 @@ import ResourcePage from "./ResourcePage";
 import { payments } from "../data/mockData";
 import { gradeOptions, paymentOptions } from "../data/formOptions";
 
+const paymentFilters = [
+  {
+    key: "month",
+    label: "Month",
+    options: [
+      {
+        value: "September 2026",
+        label: "September 2026",
+      },
+    ],
+  },
+  {
+    key: "status",
+    label: "Status",
+    options: paymentOptions,
+  },
+];
+
 const columns = [
   { key: "student", label: "Student" },
   { key: "grade", label: "Grade", grade: true },
@@ -28,7 +46,17 @@ const fields = [
   { key: "reference", label: "Receipt or reference number", fullWidth: true },
 ];
 export default function MonthlyPayments() {
-  return <ResourcePage eyebrow="Access control" title="Monthly Payments"
-    description="See which temporary student records are paid, pending, or unpaid."
-    action="Record payment" columns={columns} rows={payments} fields={fields} />;
+  return <ResourcePage 
+    eyebrow="Access control"
+      title="Monthly Payments"
+      description="See which temporary student records are paid, pending, or unpaid."
+      action="Record payment"
+      columns={columns}
+      rows={payments}
+      fields={fields}
+      searchKeys={["student", "month"]}
+      searchPlaceholder="Search student or month..."
+      filters={paymentFilters}
+      pageSize={5}
+   />;
 }

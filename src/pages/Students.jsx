@@ -3,6 +3,14 @@ import { students } from "../data/mockData";
 import { gradeOptions, paymentOptions,
   validateSriLankanPhone } from "../data/formOptions";
 
+const studentFilters = [
+  {
+    key: "grade",
+    label: "Grade",
+    options: gradeOptions,
+  },
+];
+
 const columns = [
   { key: "name", label: "Student" },
   { key: "phone", label: "Phone" },
@@ -22,7 +30,17 @@ const fields = [
     defaultValue: "Pending", options: paymentOptions },
 ];
 export default function Students() {
-  return <ResourcePage eyebrow="People" title="Students"
-    description="Review student contact, grade, and payment information."
-    action="Add student" columns={columns} rows={students} fields={fields} />;
+  return <ResourcePage 
+      eyebrow="People"
+      title="Students"
+      description="Review student contact, grade, and payment information."
+      action="Add student"
+      columns={columns}
+      rows={students}
+      fields={fields}
+      searchKeys={["name", "phone"]}
+      searchPlaceholder="Search by name or phone..."
+      filters={studentFilters}
+      pageSize={5}
+    />;
 }
