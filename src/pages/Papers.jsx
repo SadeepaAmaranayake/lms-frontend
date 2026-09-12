@@ -18,14 +18,6 @@ const materialFilters = [
     label: "Publication state",
     options: publicationOptions,
   },
-  {
-  key: "file",
-  label: "Material file",
-  type: "file",
-  accept: ".pdf,.doc,.docx",
-  fullWidth: true,
-  validate: validateMaterialFile,
-},
 ];
 
 const columns = [
@@ -37,7 +29,7 @@ const columns = [
 const fields = [
   { key: "title", label: "Paper title", required: true, fullWidth: true },
   { key: "grade", label: "Grade", type: "select", required: true,
-    options: gradeOptions },
+    options: gradeOptions, validate: validateGrade },
   { key: "category", label: "Category", type: "select", required: true,
     options: [
       { value: "Past Paper", label: "Past paper" },
@@ -49,6 +41,9 @@ const fields = [
     defaultValue: "Draft", options: publicationOptions },
   { key: "description", label: "Description", multiline: true,
     fullWidth: true },
+  { key: "file", label: "Material file", type: "file",
+    accept: ".pdf,.doc,.docx", fullWidth: true,
+    validate: validateMaterialFile },
 ];
 export default function Papers() {
   return <ResourcePage 

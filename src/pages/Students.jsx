@@ -18,15 +18,7 @@ const studentFilters = [
 
 const columns = [
   { key: "name", label: "Student" },
-  {
-    key: "phone",
-    label: "Student phone",
-    required: true,
-    placeholder: "0771234567",
-    validate: (value, values, context) =>
-      validateSriLankanPhone(value) ||
-      validateDuplicateStudentPhone(value, values, context),
-  },  
+  { key: "phone", label: "Phone" },
   {
     key: "grade",
     label: "Grade",
@@ -40,11 +32,14 @@ const columns = [
 const fields = [
   { key: "name", label: "Full name", required: true, fullWidth: true },
   { key: "phone", label: "Student phone", required: true,
-    placeholder: "0771234567", validate: validateSriLankanPhone },
+    placeholder: "0771234567",
+    validate: (value, values, context) =>
+      validateSriLankanPhone(value)
+      || validateDuplicateStudentPhone(value, values, context) },
   { key: "parentPhone", label: "Parent phone", placeholder: "+94771234567",
     validate: validateSriLankanPhone },
   { key: "grade", label: "Grade", type: "select", required: true,
-    options: gradeOptions },
+    options: gradeOptions, validate: validateGrade },
   { key: "school", label: "School" },
   { key: "status", label: "Payment status", type: "select", required: true,
     defaultValue: "Pending", options: paymentOptions },

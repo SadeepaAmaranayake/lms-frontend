@@ -18,14 +18,6 @@ const materialFilters = [
     label: "Publication state",
     options: publicationOptions,
   },
-  {
-  key: "file",
-  label: "Material file",
-  type: "file",
-  accept: ".pdf,.doc,.docx",
-  fullWidth: true,
-  validate: validateMaterialFile,
-},
 ];
 
 const columns = [
@@ -37,13 +29,16 @@ const columns = [
 const fields = [
   { key: "title", label: "Tute title", required: true, fullWidth: true },
   { key: "grade", label: "Grade", type: "select", required: true,
-    options: gradeOptions },
+    options: gradeOptions, validate: validateGrade },
   { key: "uploaded", label: "Added date", required: true,
     placeholder: "11 Sep 2026" },
   { key: "status", label: "Status", type: "select", required: true,
     defaultValue: "Draft", options: publicationOptions },
   { key: "description", label: "Description", multiline: true,
     fullWidth: true },
+  { key: "file", label: "Material file", type: "file",
+    accept: ".pdf,.doc,.docx", fullWidth: true,
+    validate: validateMaterialFile },
 ];
 export default function Tutes() {
   return <ResourcePage 

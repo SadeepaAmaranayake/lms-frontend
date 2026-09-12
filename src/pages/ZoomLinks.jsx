@@ -11,21 +11,15 @@ import {
 const columns = [
   { key: "title", label: "Class" },
   { key: "grade", label: "Grade", grade: true },
-  {
-    key: "date",
-    label: "Class date and time",
-    required: true,
-    placeholder: "16 Sep 2026, 4:00 PM",
-    validate: validateDate,
-  },
+  { key: "date", label: "Date" },
   { key: "status", label: "Status", badge: true },
 ];
 const fields = [
   { key: "title", label: "Class title", required: true, fullWidth: true },
   { key: "grade", label: "Grade", type: "select", required: true,
-    options: gradeOptions },
+    options: gradeOptions, validate: validateGrade },
   { key: "date", label: "Class date and time", required: true,
-    placeholder: "16 Sep 2026, 4:00 PM" },
+    placeholder: "16 Sep 2026, 4:00 PM", validate: validateDate },
   {
     key: "meetingUrl",
     label: "Zoom meeting URL",
