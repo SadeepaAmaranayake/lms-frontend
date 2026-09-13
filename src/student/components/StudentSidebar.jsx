@@ -9,25 +9,34 @@ import {
   Video,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import useLanguage from "../../i18n/useLanguage";
+import LanguageToggle from "./LanguageToggle";
 
 const navigation = [
-  { to: "/student/dashboard", label: "Dashboard", icon: Home },
-  { to: "/student/classes", label: "Classes", icon: Video },
-  { to: "/student/tutes", label: "Tutes", icon: BookOpen },
-  { to: "/student/papers", label: "Papers", icon: FileText },
-  { to: "/student/courses", label: "Courses", icon: GraduationCap },
-  { to: "/student/payments", label: "Payments", icon: CreditCard },
-  { to: "/student/profile", label: "Profile", icon: User },
+  { to: "/student/dashboard", labelKey: "dashboard", icon: Home },
+  { to: "/student/classes", labelKey: "classes", icon: Video },
+  { to: "/student/tutes", labelKey: "tutes", icon: BookOpen },
+  { to: "/student/papers", labelKey: "papers", icon: FileText },
+  { to: "/student/courses", labelKey: "courses", icon: GraduationCap },
+  { to: "/student/payments", labelKey: "payments", icon: CreditCard },
+  { to: "/student/profile", labelKey: "profile", icon: User },
 ];
 
 export default function StudentSidebar({ student, onLogout }) {
+  const { t } = useLanguage();
+
   return (
     <aside className="w-full bg-[#111b35] text-white md:min-h-screen md:w-64 md:shrink-0">
       <div className="border-b border-white/10 px-5 py-6">
         <h1 className="text-xl font-bold">LessonFlow</h1>
-        <p className="mt-1 text-sm text-slate-400">Student Portal</p>
+        <p className="mt-1 text-sm text-slate-400">{t("studentPortal")}</p>
         <p className="mt-4 truncate text-sm font-medium">{student.fullName}</p>
-        <p className="text-xs text-slate-400">Grade {student.grade}</p>
+        <p className="text-xs text-slate-400">
+          {t("grade", { grade: student.grade })}
+        </p>
+        <div className="mt-4">
+          <LanguageToggle dark />
+        </div>
       </div>
 
       <nav className="flex gap-1 overflow-x-auto p-3 md:block md:space-y-1 md:p-4">
@@ -47,7 +56,7 @@ export default function StudentSidebar({ student, onLogout }) {
               }
             >
               <Icon size={19} />
-              {item.label}
+              {t(item.labelKey)}
             </NavLink>
           );
         })}
@@ -60,7 +69,7 @@ export default function StudentSidebar({ student, onLogout }) {
           className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm text-red-300 hover:bg-red-500/10"
         >
           <LogOut size={19} />
-          Log out
+          {t("logout")}
         </button>
       </div>
     </aside>

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import useLanguage from "../../i18n/useLanguage";
+import LanguageToggle from "../components/LanguageToggle";
 import {
   findStudentByPhone,
   normalizePhone,
@@ -7,6 +9,7 @@ import {
 
 export default function StudentLogin() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
@@ -17,14 +20,14 @@ export default function StudentLogin() {
     const cleanedPhone = normalizePhone(phone);
 
     if (!/^[0-9]{9,15}$/.test(cleanedPhone)) {
-      setError("Enter a valid phone number.");
+      setError(t("invalidPhone"));
       return;
     }
 
     const student = findStudentByPhone(cleanedPhone);
 
     if (!student) {
-      setError("No development student account matches this phone number.");
+      setError(t("accountNotFound"));
       return;
     }
 
@@ -36,16 +39,19 @@ export default function StudentLogin() {
   return (
     <div className="grid min-h-screen place-items-center bg-slate-100 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-lg">
+        <div className="mb-6 flex justify-end">
+          <LanguageToggle />
+        </div>
         <h1 className="text-2xl font-bold text-slate-900">
-          Student login
+          {t("loginTitle")}
         </h1>
 
         <p className="mt-2 text-sm text-slate-500">
-          Enter your registered phone number.
+          {t("loginDescription")}
         </p>
 
         <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-          Development only: use phone 0771234567. No real SMS will be sent.
+          {t("loginDevNotice")}
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -54,7 +60,7 @@ export default function StudentLogin() {
               htmlFor="phone"
               className="mb-2 block text-sm font-medium text-slate-700"
             >
-              Phone number
+              {t("phoneNumber")}
             </label>
 
             <input
@@ -78,7 +84,7 @@ export default function StudentLogin() {
             type="submit"
             className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700"
           >
-            Continue
+            {t("continue")}
           </button>
         </form>
       </div>

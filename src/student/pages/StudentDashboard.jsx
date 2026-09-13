@@ -2,6 +2,7 @@ import { BookOpen, CalendarDays, CreditCard } from "lucide-react";
 import { useState } from "react";
 import DevStateControls from "../../components/DevStateControls";
 import PageState from "../../components/PageState";
+import useLanguage from "../../i18n/useLanguage";
 import ClassCard from "../components/ClassCard";
 import PaymentStatus from "../components/PaymentStatus";
 import {
@@ -11,28 +12,32 @@ import {
 
 export default function StudentDashboard() {
   const [pageState, setPageState] = useState("success");
+  const { t } = useLanguage();
   const student = getStudentById(sessionStorage.getItem("student-id"));
   const nextClass = studentClasses.find(
     (classItem) => classItem.grade === student.grade,
   );
 
   function handleJoin() {
-    window.alert("Development only: no real Zoom link is connected yet.");
+    window.alert(t("zoomAlert"));
   }
 
   return (
     <div>
       <div>
         <p className="text-sm font-medium text-indigo-600">
-          Student Portal
+          {t("studentPortal")}
         </p>
 
         <h1 className="mt-1 text-3xl font-bold text-slate-900">
-          Welcome, {student.fullName}
+          {t("welcome", { name: student.fullName })}
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Grade {student.grade} · {student.school}
+          {t("studentDetails", {
+            grade: student.grade,
+            school: student.school,
+          })}
         </p>
       </div>
 
@@ -43,8 +48,7 @@ export default function StudentDashboard() {
       <PageState state={pageState} onRetry={() => setPageState("success")}>
         {student.paymentStatus !== "paid" && (
           <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
-            Your payment is currently unpaid. Some paid content may be
-            unavailable.
+            {t("unpaidWarning")}
           </div>
         )}
 
@@ -52,14 +56,19 @@ export default function StudentDashboard() {
         <article className="rounded-2xl bg-white p-5 shadow-sm">
           <CalendarDays className="text-indigo-600" />
 
-          <p className="mt-4 text-sm text-slate-500">Next class</p>
+          <p className="mt-4 text-sm text-slate-500">{t("nextClass")}</p>
 
           <h2 className="mt-1 text-lg font-bold text-slate-900">
-            {nextClass?.subject ?? "No upcoming class"}
+            {nextClass?.subject ?? t("noUpcomingClass")}
           </h2>
 
           <p className="mt-2 text-sm text-slate-600">
-            {nextClass ? `${nextClass.date} at ${nextClass.time}` : "Check again later"}
+            {nextClass
+              ? t("classDateTime", {
+                  date: nextClass.date,
+                  time: nextClass.time,
+                })
+              : t("checkLater")}
           </p>
         </article>
 
@@ -67,7 +76,7 @@ export default function StudentDashboard() {
           <CreditCard className="text-emerald-600" />
 
           <p className="mt-4 text-sm text-slate-500">
-            Payment status
+            {t("paymentStatus")}
           </p>
 
           <div className="mt-2">
@@ -79,7 +88,7 @@ export default function StudentDashboard() {
           <BookOpen className="text-amber-600" />
 
           <p className="mt-4 text-sm text-slate-500">
-            Purchased courses
+            {t("purchasedCourses")}
           </p>
 
           <h2 className="mt-1 text-lg font-bold text-slate-900">
@@ -90,7 +99,7 @@ export default function StudentDashboard() {
 
         <section className="mt-8">
         <h2 className="text-xl font-bold text-slate-900">
-          Upcoming class
+          {t("upcomingClass")}
         </h2>
 
           <div className="mt-4">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DevStateControls from "../../components/DevStateControls";
 import PageState from "../../components/PageState";
+import useLanguage from "../../i18n/useLanguage";
 import LockedContent from "../components/LockedContent";
 import {
   getStudentById,
@@ -10,6 +11,7 @@ import {
 export default function StudentCourses() {
   const [pageState, setPageState] = useState("success");
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
   const student = getStudentById(sessionStorage.getItem("student-id"));
   const filteredCourses = studentCourses.filter((course) =>
     `${course.title} ${course.subject}`
@@ -26,9 +28,9 @@ export default function StudentCourses() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-slate-900">Courses</h1>
+      <h1 className="text-3xl font-bold text-slate-900">{t("courses")}</h1>
       <p className="mt-2 text-slate-500">
-        Purchased courses are available from this page.
+        {t("coursesDescription")}
       </p>
 
       <div className="mt-6">
@@ -37,8 +39,8 @@ export default function StudentCourses() {
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search courses..."
-          aria-label="Search courses"
+          placeholder={t("searchCourses")}
+          aria-label={t("searchCourses")}
           className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         />
       </div>
@@ -68,13 +70,13 @@ export default function StudentCourses() {
                     {purchased ? (
                       <button
                         type="button"
-                        onClick={() => window.alert("Development only: course lessons are not connected yet.")}
+                        onClick={() => window.alert(t("courseAlert"))}
                         className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                       >
-                        Open course
+                        {t("openCourse")}
                       </button>
                     ) : (
-                      <LockedContent reason="This course has not been purchased or assigned to your account." />
+                      <LockedContent reason={t("courseLocked")} />
                     )}
                   </div>
                 </article>

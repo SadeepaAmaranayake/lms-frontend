@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
+import useLanguage from "../../i18n/useLanguage";
+import LanguageToggle from "../components/LanguageToggle";
 import { getStudentById } from "../data/studentMockData";
 
 const DEVELOPMENT_OTP = "123456";
 
 export default function StudentOtp() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const phone = sessionStorage.getItem("student-phone");
   const pendingStudentId = sessionStorage.getItem("pending-student-id");
   const student = getStudentById(pendingStudentId);
@@ -21,7 +24,7 @@ export default function StudentOtp() {
     event.preventDefault();
 
     if (otp !== DEVELOPMENT_OTP) {
-      setError("Incorrect test code.");
+      setError(t("incorrectCode"));
       return;
     }
 
@@ -34,17 +37,19 @@ export default function StudentOtp() {
   return (
     <div className="grid min-h-screen place-items-center bg-slate-100 px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-lg">
+        <div className="mb-6 flex justify-end">
+          <LanguageToggle />
+        </div>
         <h1 className="text-2xl font-bold text-slate-900">
-          Verify phone number
+          {t("otpTitle")}
         </h1>
 
         <p className="mt-2 text-sm text-slate-500">
-          Test verification for {phone}
+          {t("otpDescription", { phone })}
         </p>
 
         <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-          Development only: use test code <strong>123456</strong>.
-          No SMS is being sent.
+          {t("otpDevNotice")}
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
@@ -53,7 +58,7 @@ export default function StudentOtp() {
               htmlFor="otp"
               className="mb-2 block text-sm font-medium text-slate-700"
             >
-              Six-digit code
+              {t("otpCode")}
             </label>
 
             <input
@@ -80,7 +85,7 @@ export default function StudentOtp() {
             type="submit"
             className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700"
           >
-            Verify
+            {t("verify")}
           </button>
 
           <button
@@ -88,7 +93,7 @@ export default function StudentOtp() {
             onClick={() => navigate("/student/login")}
             className="w-full rounded-lg border border-slate-300 px-4 py-3 font-medium text-slate-700 hover:bg-slate-50"
           >
-            Change phone number
+            {t("changePhone")}
           </button>
 
           <button
@@ -96,7 +101,7 @@ export default function StudentOtp() {
             disabled
             className="w-full cursor-not-allowed text-sm text-slate-400"
           >
-            Resend SMS unavailable during development
+            {t("resendUnavailable")}
           </button>
         </form>
       </div>

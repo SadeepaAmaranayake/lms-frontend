@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DevStateControls from "../../components/DevStateControls";
 import PageState from "../../components/PageState";
+import useLanguage from "../../i18n/useLanguage";
 import MaterialCard from "../components/MaterialCard";
 import {
   getStudentById,
@@ -10,6 +11,7 @@ import {
 export default function StudentPapers() {
   const [pageState, setPageState] = useState("success");
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
   const student = getStudentById(sessionStorage.getItem("student-id"));
   const records = studentPapers.filter((paper) => paper.grade === student.grade);
   const filteredRecords = records.filter((paper) =>
@@ -27,9 +29,11 @@ export default function StudentPapers() {
 
   return (
     <div>
-      <p className="text-sm font-medium text-indigo-600">Grade {student.grade}</p>
-      <h1 className="mt-1 text-3xl font-bold text-slate-900">Papers</h1>
-      <p className="mt-2 text-slate-500">Past and model papers for your grade.</p>
+      <p className="text-sm font-medium text-indigo-600">
+        {t("grade", { grade: student.grade })}
+      </p>
+      <h1 className="mt-1 text-3xl font-bold text-slate-900">{t("papers")}</h1>
+      <p className="mt-2 text-slate-500">{t("papersDescription")}</p>
 
       <div className="mt-6">
         <DevStateControls value={pageState} onChange={setPageState} />
@@ -37,8 +41,8 @@ export default function StudentPapers() {
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search papers..."
-          aria-label="Search papers"
+          placeholder={t("searchPapers")}
+          aria-label={t("searchPapers")}
           className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         />
       </div>

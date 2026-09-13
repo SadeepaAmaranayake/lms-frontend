@@ -1,4 +1,7 @@
+import useLanguage from "../../i18n/useLanguage";
+
 export default function PaymentStatus({ status }) {
+  const { t } = useLanguage();
   const paid = status === "paid";
 
   return (
@@ -9,7 +12,7 @@ export default function PaymentStatus({ status }) {
           : "bg-rose-100 text-rose-700"
       }`}
     >
-      {status}
+      {t(status.toLowerCase())}
     </span>
   );
 }

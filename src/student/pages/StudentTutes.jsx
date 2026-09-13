@@ -1,12 +1,14 @@
 import { useState } from "react";
 import DevStateControls from "../../components/DevStateControls";
 import PageState from "../../components/PageState";
+import useLanguage from "../../i18n/useLanguage";
 import MaterialCard from "../components/MaterialCard";
 import { getStudentById, studentTutes } from "../data/studentMockData";
 
 export default function StudentTutes() {
   const [pageState, setPageState] = useState("success");
   const [search, setSearch] = useState("");
+  const { t } = useLanguage();
   const student = getStudentById(sessionStorage.getItem("student-id"));
   const records = studentTutes.filter((tute) => tute.grade === student.grade);
 
@@ -40,10 +42,10 @@ export default function StudentTutes() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-slate-900">
-        Tutes
+        {t("tutes")}
       </h1>
       <p className="mt-2 text-slate-500">
-        Grade {student.grade} learning materials.
+        {t("tutesDescription", { grade: student.grade })}
       </p>
 
       <div className="mt-6">
@@ -52,7 +54,7 @@ export default function StudentTutes() {
           htmlFor="tute-search"
           className="mb-2 block text-sm font-medium text-slate-700"
         >
-          Search tutes
+          {t("searchTutesLabel")}
         </label>
 
         <input
@@ -60,7 +62,7 @@ export default function StudentTutes() {
           type="search"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search by title or subject..."
+          placeholder={t("searchTutes")}
           className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
         />
       </div>

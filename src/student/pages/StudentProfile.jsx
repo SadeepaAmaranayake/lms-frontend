@@ -1,26 +1,28 @@
 import { useState } from "react";
 import DevStateControls from "../../components/DevStateControls";
 import PageState from "../../components/PageState";
+import useLanguage from "../../i18n/useLanguage";
 import PaymentStatus from "../components/PaymentStatus";
 import { getStudentById } from "../data/studentMockData";
 
 export default function StudentProfile() {
   const [pageState, setPageState] = useState("success");
+  const { t } = useLanguage();
   const student = getStudentById(sessionStorage.getItem("student-id"));
   const fields = [
-    ["Full name", student.fullName],
-    ["Phone number", student.phone],
-    ["Grade", `Grade ${student.grade}`],
-    ["School", student.school],
-    ["Registration date", student.registrationDate],
-    ["Account status", student.status],
+    [t("fullName"), student.fullName],
+    [t("phoneNumber"), student.phone],
+    [t("gradeLabel"), t("grade", { grade: student.grade })],
+    [t("school"), student.school],
+    [t("registrationDate"), student.registrationDate],
+    [t("accountStatus"), t(student.status.toLowerCase())],
   ];
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-slate-900">Profile</h1>
+      <h1 className="text-3xl font-bold text-slate-900">{t("profile")}</h1>
       <p className="mt-2 text-slate-500">
-        Profile information is controlled by the administrator.
+        {t("profileDescription")}
       </p>
 
       <div className="mt-6">
@@ -39,7 +41,7 @@ export default function StudentProfile() {
               </div>
             ))}
             <div>
-              <p className="text-sm text-slate-500">Payment status</p>
+              <p className="text-sm text-slate-500">{t("paymentStatus")}</p>
               <div className="mt-2">
                 <PaymentStatus status={student.paymentStatus} />
               </div>
