@@ -46,14 +46,15 @@ export default function App() {
         <Route path="/payments" element={<MonthlyPayments />} />
         <Route path="/announcements" element={<Announcements />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/student" element={<StudentHome />} />
       </Route>
 
+      <Route path="/student" element={<StudentHome />} />
       <Route path="/student/login" element={<StudentLogin />} />
       <Route path="/student/otp" element={<StudentOtp />} />
 
       <Route element={<RequiredStudent />}>
         <Route path="/student" element={<StudentLayout />}>
+          <Route path="teacher" element={<StudentHome embedded />} />
           <Route path="dashboard" element={<StudentDashboard />} />
           <Route path="classes" element={<StudentClasses />} />
           <Route path="tutes" element={<StudentTutes />} />

@@ -31,7 +31,7 @@ export default function StudentOtp() {
     sessionStorage.setItem("student-authenticated", "true");
     sessionStorage.setItem("student-id", student.id);
     sessionStorage.removeItem("pending-student-id");
-    navigate("/student/dashboard", { replace: true });
+    navigate("/student/teacher", { replace: true });
   }
 
   return (

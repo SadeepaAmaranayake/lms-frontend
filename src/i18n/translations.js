@@ -2,6 +2,7 @@ export const translations = {
   en: {
     languageLabel: "Language",
     studentPortal: "Student Portal",
+    aboutTeacher: "About Teacher",
     dashboard: "Dashboard",
     classes: "Classes",
     tutes: "Tutes",
@@ -112,6 +113,7 @@ export const translations = {
   si: {
     languageLabel: "භාෂාව",
     studentPortal: "ශිෂ්‍ය ද්වාරය",
+    aboutTeacher: "ගුරුවරයා ගැන",
     dashboard: "මුල් පිටුව",
     classes: "පන්ති",
     tutes: "නිබන්ධන",

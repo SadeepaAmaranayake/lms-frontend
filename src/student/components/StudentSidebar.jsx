@@ -4,6 +4,7 @@ import {
   FileText,
   GraduationCap,
   Home,
+  Info,
   LogOut,
   User,
   Video,
@@ -13,6 +14,7 @@ import useLanguage from "../../i18n/useLanguage";
 import LanguageToggle from "./LanguageToggle";
 
 const navigation = [
+  { to: "/student/teacher", labelKey: "aboutTeacher", icon: Info },
   { to: "/student/dashboard", labelKey: "dashboard", icon: Home },
   { to: "/student/classes", labelKey: "classes", icon: Video },
   { to: "/student/tutes", labelKey: "tutes", icon: BookOpen },

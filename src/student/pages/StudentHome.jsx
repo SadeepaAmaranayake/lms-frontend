@@ -19,7 +19,7 @@ import teacherClassroom from "../../assets/teacher-classroom.jpg";
 import useLanguage from "../../i18n/useLanguage";
 import LanguageToggle from "../components/LanguageToggle";
 
-export default function StudentHome() {
+export default function StudentHome({ embedded = false }) {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -33,8 +33,8 @@ export default function StudentHome() {
   }
 
   return (
-    <main className="min-h-screen bg-muted/40">
-      <header className="border-b bg-background">
+    <main className={embedded ? "space-y-8" : "min-h-screen bg-muted/40"}>
+      {!embedded && <header className="border-b bg-background">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
           <div className="flex items-center gap-3">
             <span className="grid size-10 place-items-center rounded-xl bg-primary font-bold text-primary-foreground">
@@ -46,9 +46,11 @@ export default function StudentHome() {
 
           <LanguageToggle />
         </div>
-      </header>
+      </header>}
 
-      <section className="mx-auto grid max-w-6xl gap-10 px-5 py-12 lg:grid-cols-2 lg:items-center lg:py-20">
+      <section className={`grid gap-10 lg:grid-cols-2 lg:items-center ${
+        embedded ? "" : "mx-auto max-w-6xl px-5 py-12 lg:py-20"
+      }`}>
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">
             {t("teacherWelcome")}
@@ -94,8 +96,10 @@ export default function StudentHome() {
         </div>
       </section>
 
-      <section className="border-t bg-background">
-        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-12 md:grid-cols-3">
+      <section className={embedded ? "" : "border-t bg-background"}>
+        <div className={`grid gap-6 md:grid-cols-3 ${
+          embedded ? "" : "mx-auto max-w-6xl px-5 py-12"
+        }`}>
           <Card>
             <CardHeader>
               <GraduationCap className="size-7 text-primary" />
