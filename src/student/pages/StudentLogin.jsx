@@ -1,5 +1,26 @@
 import { useState } from "react";
+import { GraduationCap, Phone, UserRound } from "lucide-react";
 import { useNavigate } from "react-router";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import useLanguage from "../../i18n/useLanguage";
 import LanguageToggle from "../components/LanguageToggle";
 import {
@@ -7,19 +28,37 @@ import {
   normalizePhone,
 } from "../data/studentMockData";
 
+const grades = Array.from({ length: 8 }, (_, index) => index + 6);
+
 export default function StudentLogin() {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [grade, setGrade] = useState("");
   const [error, setError] = useState("");
+
+  function clearError() {
+    setError("");
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
 
+    if (!name.trim()) {
+      setError(t("nameRequired"));
+      return;
+    }
+
+    if (!grade) {
+      setError(t("selectGrade"));
+      return;
+    }
+
     const cleanedPhone = normalizePhone(phone);
 
-    if (!/^[0-9]{9,15}$/.test(cleanedPhone)) {
+    if (!/^07\d{8}$/.test(cleanedPhone)) {
       setError(t("invalidPhone"));
       return;
     }
@@ -31,63 +70,140 @@ export default function StudentLogin() {
       return;
     }
 
+    const enteredName = name
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLocaleLowerCase();
+
+    const registeredName = student.fullName
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLocaleLowerCase();
+
+    if (
+      enteredName !== registeredName ||
+      Number(grade) !== student.grade
+    ) {
+      setError(t("detailsDoNotMatch"));
+      return;
+    }
+
     sessionStorage.setItem("student-phone", cleanedPhone);
     sessionStorage.setItem("pending-student-id", student.id);
     navigate("/student/otp");
   }
 
   return (
-    <div className="grid min-h-screen place-items-center bg-slate-100 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-7 shadow-lg">
-        <div className="mb-6 flex justify-end">
-          <LanguageToggle />
-        </div>
-        <h1 className="text-2xl font-bold text-slate-900">
-          {t("loginTitle")}
-        </h1>
+    <main className="grid min-h-screen place-items-center bg-muted/40 px-4 py-10">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader>
+          <div className="mb-4 flex items-center justify-between">
+            <span className="grid size-11 place-items-center rounded-xl bg-primary text-primary-foreground">
+              <GraduationCap className="size-5" />
+            </span>
 
-        <p className="mt-2 text-sm text-slate-500">
-          {t("loginDescription")}
-        </p>
-
-        <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-          {t("loginDevNotice")}
-        </div>
-
-        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-          <div>
-            <label
-              htmlFor="phone"
-              className="mb-2 block text-sm font-medium text-slate-700"
-            >
-              {t("phoneNumber")}
-            </label>
-
-            <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(event) => {
-                setPhone(event.target.value);
-                setError("");
-              }}
-              placeholder="0771234567"
-              className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-            />
-
-            {error && (
-              <p className="mt-2 text-sm text-red-600">{error}</p>
-            )}
+            <LanguageToggle />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-indigo-600 px-4 py-3 font-medium text-white hover:bg-indigo-700"
-          >
-            {t("continue")}
-          </button>
-        </form>
-      </div>
-    </div>
+          <CardTitle className="text-2xl">{t("loginTitle")}</CardTitle>
+
+          <CardDescription>{t("loginDescription")}</CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <Alert className="mb-6 border-amber-300 bg-amber-50">
+            <AlertDescription className="text-amber-900">
+              {t("loginDevNotice")}
+            </AlertDescription>
+          </Alert>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="student-name">{t("fullName")}</Label>
+
+              <div className="relative">
+                <UserRound className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+
+                <Input
+                  id="student-name"
+                  value={name}
+                  autoComplete="name"
+                  placeholder="Test Student"
+                  className="h-11 pl-9"
+                  aria-invalid={Boolean(error)}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    clearError();
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="student-phone">{t("phoneNumber")}</Label>
+
+              <div className="relative">
+                <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+
+                <Input
+                  id="student-phone"
+                  type="tel"
+                  inputMode="tel"
+                  value={phone}
+                  autoComplete="tel"
+                  placeholder="0771234567"
+                  className="h-11 pl-9"
+                  aria-invalid={Boolean(error)}
+                  onChange={(event) => {
+                    setPhone(event.target.value);
+                    clearError();
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>{t("gradeLabel")}</Label>
+
+              <Select
+                value={grade}
+                onValueChange={(value) => {
+                  setGrade(value);
+                  clearError();
+                }}
+              >
+                <SelectTrigger
+                  className="h-11 w-full"
+                  aria-invalid={Boolean(error)}
+                >
+                  <SelectValue placeholder={t("selectGrade")} />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {grades.map((gradeNumber) => (
+                    <SelectItem
+                      key={gradeNumber}
+                      value={String(gradeNumber)}
+                    >
+                      {t("grade", { grade: gradeNumber })}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <Button type="submit" className="h-11 w-full">
+              {t("continue")}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </main>
   );
 }

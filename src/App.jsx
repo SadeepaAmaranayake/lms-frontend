@@ -24,6 +24,7 @@ import Students from "./pages/Students";
 import Timetable from "./pages/Timetable";
 import Tutes from "./pages/Tutes";
 import ZoomLinks from "./pages/ZoomLinks";
+import StudentHome from "./student/pages/StudentHome";
 function RequireAdmin() {
   const signedIn = sessionStorage.getItem("lms-admin") === "true";
   return signedIn ? <AdminLayout /> : <Navigate to="/login" replace />;
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/payments" element={<MonthlyPayments />} />
         <Route path="/announcements" element={<Announcements />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/student" element={<StudentHome />} />
       </Route>
 
       <Route path="/student/login" element={<StudentLogin />} />
@@ -52,10 +54,6 @@ export default function App() {
 
       <Route element={<RequiredStudent />}>
         <Route path="/student" element={<StudentLayout />}>
-          <Route
-            index
-            element={<Navigate to="/student/dashboard" replace />}
-          />
           <Route path="dashboard" element={<StudentDashboard />} />
           <Route path="classes" element={<StudentClasses />} />
           <Route path="tutes" element={<StudentTutes />} />
