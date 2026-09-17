@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GraduationCap, Phone } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GenerativeTree } from "@/components/ui/generative-tree";
 
-import teacherClassroom from "../../assets/teacher-classroom.jpg";
 import useLanguage from "../../i18n/useLanguage";
 import LanguageToggle from "../components/LanguageToggle";
 import {
@@ -28,6 +28,18 @@ export default function StudentLogin() {
 
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
+  const [showTree, setShowTree] = useState(() =>
+    window.matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)").matches
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia(
+      "(min-width: 1024px) and (prefers-reduced-motion: no-preference)"
+    );
+    const update = () => setShowTree(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -52,50 +64,26 @@ export default function StudentLogin() {
   }
 
   return (
-    <main className="min-h-svh bg-slate-100">
-      <div className="mx-auto grid min-h-svh max-w-7xl lg:grid-cols-[minmax(0,1fr)_480px] lg:gap-8 lg:px-8 lg:py-8">
-        {/* Visual panel: shown only on larger screens */}
-        <section className="relative hidden min-h-[640px] overflow-hidden rounded-3xl bg-slate-950 text-white lg:flex lg:flex-col lg:justify-between">
-          <img
-            src={teacherClassroom}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-50"
+    <main className="grid min-h-svh lg:grid-cols-2">
+      <section
+        aria-hidden="true"
+        className="relative hidden min-h-svh overflow-hidden bg-[#0a0a0a] lg:block"
+      >
+        {showTree ? (
+          <GenerativeTree
+            className="absolute inset-0"
+            style={{ pointerEvents: "none" }}
+            speed={0.65}
+            particleAmount={0.5}
+            hue={170}
           />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,#193954,#0a0a0a_70%)]" />
+        )}
+      </section>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-slate-950/20" />
-
-          <div className="relative p-10">
-            <p className="text-xl font-bold">LessonFlow</p>
-            <p className="mt-1 text-sm text-white/80">
-              {t("studentPortal")}
-            </p>
-          </div>
-
-          <div className="relative p-10">
-            <p className="text-sm font-semibold text-indigo-200">
-              {t("teacherWelcome")}
-            </p>
-
-            <h1 className="mt-3 max-w-lg text-4xl font-bold leading-tight">
-              {t("meetTeacher")}
-            </h1>
-
-            <p className="mt-3 text-white/85">
-              {t("teacherSubject")}
-            </p>
-
-            <Link
-              to="/student"
-              className="mt-6 inline-flex rounded-lg border border-white/40 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
-            >
-              {t("meetTeacher")}
-            </Link>
-          </div>
-        </section>
-
-        {/* Form panel: visible on every screen size */}
-        <div className="flex items-center justify-center px-4 py-8 sm:px-8 lg:px-0">
-          <Card className="w-full max-w-md shadow-lg">
+      <section className="flex min-h-svh items-center justify-center bg-slate-50 px-4 py-8 sm:px-8">
+          <Card className="w-full max-w-md shadow-xl">
             <CardHeader>
               <div className="mb-4 flex items-center justify-between gap-3">
                 <span className="grid size-11 place-items-center rounded-xl bg-primary text-primary-foreground">
@@ -166,14 +154,13 @@ export default function StudentLogin() {
 
               <Link
                 to="/student"
-                className="mt-6 block text-center text-sm text-muted-foreground underline-offset-4 hover:underline lg:hidden"
+                className="mt-6 block text-center text-sm text-muted-foreground underline-offset-4 hover:underline"
               >
                 {t("meetTeacher")}
               </Link>
             </CardContent>
           </Card>
-        </div>
-      </div>
+      </section>
     </main>
   );
 }
