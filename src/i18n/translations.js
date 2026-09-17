@@ -109,6 +109,8 @@ export const translations = {
     teacherClassesDescription: "Classes include guided practice, revision and exam preparation.",
     continueToLogin: "Continue to student login",
     openDashboard: "Open student dashboard",
+    loginDescription: "Enter your registered phone number to continue.",
+    loginDevNotice: "Development only: use 0771234567. No real SMS will be sent.",
   },
   si: {
     languageLabel: "භාෂාව",
@@ -221,5 +223,7 @@ export const translations = {
     teacherClassesDescription: "පන්තිවල මාර්ගෝපදේශිත පුහුණුව, පුනරීක්ෂණය සහ විභාග සූදානම ඇතුළත් වේ.",
     continueToLogin: "ශිෂ්‍ය පිවිසුමට යන්න",
     openDashboard: "ශිෂ්‍ය මුල් පිටුව විවෘත කරන්න",
+    loginDescription: "ඉදිරියට යාමට ලියාපදිංචි කළ දුරකථන අංකය ඇතුළත් කරන්න.",
+    loginDevNotice: "සංවර්ධන පරීක්ෂාව සඳහා පමණි: 0771234567 භාවිත කරන්න. සැබෑ SMS පණිවිඩයක් නොයවයි.",
   },
 };
